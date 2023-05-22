@@ -10,6 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
 
 import alakeel.restaurant.Restaurant;
 
@@ -86,10 +90,14 @@ public class CustomerOwner {
     }
    
     @RolesAllowed({"CustomerOwner"})
-
+    @GET
+    @Path("/ListRestaurants")
+    @Consumes(MediaType.APPLICATION_JSON)
     public  List <Restaurant> getListRestaurants () {
         return ListRestaurants;
     }
+    
+
 
     public void setListRestaurants (List<Restaurant> ListRestaurants) {
     	Query query=entityManager.createQuery("ListRestaurants");
