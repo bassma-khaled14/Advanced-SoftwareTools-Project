@@ -8,10 +8,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
 @Entity
+@NamedQuery(name = "listallmeals", query = "Select m from Meal m")
 public class Restaurant implements Serializable {
 
 	@Id
@@ -19,16 +21,16 @@ public class Restaurant implements Serializable {
 	private int resid;
 	@NotNull
 	private String name;
-	private int ownerid;                       
+	private RestaurantOwner resownerid;                       
 	@OneToMany(mappedBy = "meal")
     private List<Meal> mealList;
     @NotNull
     private String address;
     EntityManager entityManager;
-    public Restaurant(int resid, String name, int ownerid, List<Meal> mealList, String address) {
+    public Restaurant(int resid, String name, RestaurantOwner resownerid, List<Meal> mealList, String address) {
         this.resid = resid;
         this.name = name;
-        this.ownerid = ownerid;
+        this.resownerid=resownerid;
         this.mealList = mealList;
         this.address=address;
     }
@@ -52,15 +54,16 @@ public class Restaurant implements Serializable {
         this.name = name;
     }
 
-    public int getOwnerId() {
-        return ownerid;
+    public RestaurantOwner getRestaurantOwner() {
+        return resownerid;
     }
 
-    public void setownerid(int ownerid) {
-        this.ownerid = ownerid;
+    public void setRestaurantOwner(RestaurantOwner resownerid) {
+        this.resownerid = resownerid;
     }
-    public List<Meal> getMealList() {
-    	Query query=entityManager.createQuery(address);
+    
+    public List<Meal> getMealList(String Meal) {
+    	Query query=entityManager.createQuery("listallmeals");
     	List<Meal>MealList=query.getResultList();
     			
         return mealList;
