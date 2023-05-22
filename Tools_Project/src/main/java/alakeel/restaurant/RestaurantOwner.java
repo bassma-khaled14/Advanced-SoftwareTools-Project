@@ -13,6 +13,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 @Entity
 @RolesAllowed({"RestaurantOwner"})
+@Path("/RestaurantOwner")
+
 public class RestaurantOwner {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
