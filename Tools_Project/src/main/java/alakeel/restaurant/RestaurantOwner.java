@@ -21,6 +21,8 @@ public class RestaurantOwner {
 	private String username;
 	@NotNull
 	private int pass;
+	@NotNull
+	private String email;
     @PersistenceContext(unitName = "myPersistenceUnit")
 	private EntityManager em;
 	public RestaurantOwner() {}
@@ -52,6 +54,13 @@ public class RestaurantOwner {
 	    public int getpass() {
 	        return pass;
 	    }
+	    public void setEmail(String email) {
+	    	this.email=email;
+	    }
+	    public String getEmail() {
+	        return email;
+	    }
+
 	   
         //Function craete Menu 
 	    

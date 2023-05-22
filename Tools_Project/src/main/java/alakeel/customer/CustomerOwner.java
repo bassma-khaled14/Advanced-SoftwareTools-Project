@@ -27,6 +27,8 @@ public class CustomerOwner {
 	private String username;
 	@NotNull
 	private int pass;
+	@NotNull
+	private String email;
     private EntityManager entityManager;
 	private List <Restaurant> ListRestaurants;
 
@@ -76,6 +78,12 @@ public class CustomerOwner {
     public int getpass() {
         return pass;
     }
+    public void setEmail(String email) {
+    	this.email=email;
+    }
+    public String getEmail() {
+        return email;
+    }
    
     @RolesAllowed({"CustomerOwner"})
 
@@ -87,6 +95,7 @@ public class CustomerOwner {
     	Query query=entityManager.createQuery("ListRestaurants");
         this.ListRestaurants = ListRestaurants;
     }
+    
    
 	
 	
