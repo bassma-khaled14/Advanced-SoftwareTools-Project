@@ -1,5 +1,7 @@
 package alakeel.runner;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 import alakeel.customer.Order;
 @Entity
-public class Runner {
+public class Runner implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int runnerid;
