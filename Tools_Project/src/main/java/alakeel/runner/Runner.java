@@ -22,6 +22,7 @@ import alakeel.customer.Order;
 @Entity
 @RolesAllowed({"runner"})
 @NamedQuery(name = "Runner", query = "Select r from Runner Runners")
+@Path("/Runner")
 
 public class Runner implements Serializable{
 	@Id
