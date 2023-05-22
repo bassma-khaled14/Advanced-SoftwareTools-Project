@@ -3,6 +3,7 @@ package alakeel.customer;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
@@ -19,7 +20,6 @@ import alakeel.runner.Runner;
 
 @Entity
 @NamedQuery(name = "itemarray", query = "Select item from itemarr itemarray")
-
 public class Order implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -45,7 +45,7 @@ public class Order implements Serializable{
         this.totalPrice = totalPrice;
         this.runner = runner;
         this.restaurant = restaurant;
-        this.orderStatus = "preparing";
+ 
     }
 
     // getters and setters
@@ -98,8 +98,22 @@ public class Order implements Serializable{
         this.restaurant = restaurant;
     }
 
-    public void setDelivered(boolean delivered) {
-		this.delivered=delivered;			
-		}	
+   	@RolesAllowed({"runner"})
+    public void addMoneyToRes(double totalPrice,String orderStatus,Restaurant resid)
+    {
+    	if(orderStatus=="Delivered")
+    	{
+    		resid.settotalincome(resid.gettotalincome()+totalPrice);
+    		
+    	}
+    	
+    }
+   	public void NumberAllCancelled(Restaurant resid,String orderStatus)
+   	{
+   		if((orderStatus=="Cancelled"))
+   		{
+   			resid.setCancelledOrder(resid.getCancelledOrder()+1);
+   		}
+   	}
 
 }
