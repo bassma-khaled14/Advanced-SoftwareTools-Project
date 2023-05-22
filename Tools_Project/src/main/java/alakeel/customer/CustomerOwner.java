@@ -1,11 +1,19 @@
 package alakeel.customer;
+import java.util.List;
+
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
 
+import alakeel.restaurant.Restaurant;
 
+@NamedQuery(name = "ListRestaurants", query = "Select r from  Runners")
 @Entity
 public class CustomerOwner {
 	@Id
@@ -15,6 +23,9 @@ public class CustomerOwner {
 	private String name;
     @NotNull
     private String address;
+    private EntityManager entityManager;
+	private List <Restaurant> ListRestaurants;
+
     public CustomerOwner() {}
     public CustomerOwner(int custid, String name, String address) {
         this.custid = custid;
@@ -45,5 +56,20 @@ public class CustomerOwner {
     {
     	return address;
     }
+    @RolesAllowed({"CustomerOwner"})
+
+    public  List <Restaurant> getListRestaurants () {
+        return ListRestaurants;
+    }
+
+    public void setListRestaurants (List<Restaurant> ListRestaurants) {
+    	Query query=entityManager.createQuery("ListRestaurants");
+        this.ListRestaurants = ListRestaurants;
+    }
+   
+	
+	
+
+
 
 }
