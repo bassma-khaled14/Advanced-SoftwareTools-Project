@@ -31,6 +31,10 @@ public class Runner implements Serializable{
 	private double deliveryFees;
 	@NotNull
 	private int RandomAvailableRunner;
+	@NotNull
+	private String username;
+	@NotNull
+	private int pass;
 	private List <Runner> Runners;
 	private int accomplishedtrips;
 	EntityManager em;
@@ -82,6 +86,20 @@ public class Runner implements Serializable{
 
     public void setaccomplishedtrips(int accomplishedtrips) {
         this.accomplishedtrips = accomplishedtrips;
+    }
+
+    public void setUserName(String username) {
+    	this.username=username;
+    }
+    public String getUserName() {
+        return username;
+    }
+
+    public void setpass(int pass) {
+        this.pass = pass;
+    }
+    public int getpass() {
+        return pass;
     }
     public List <Runner>  getRunners() {
         return Runners;
