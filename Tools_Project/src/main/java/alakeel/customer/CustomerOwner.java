@@ -23,14 +23,20 @@ public class CustomerOwner {
 	private String name;
     @NotNull
     private String address;
+	@NotNull
+	private String username;
+	@NotNull
+	private int pass;
     private EntityManager entityManager;
 	private List <Restaurant> ListRestaurants;
 
     public CustomerOwner() {}
-    public CustomerOwner(int custid, String name, String address) {
+    public CustomerOwner(int custid, String name, String address,int pass,String username) {
         this.custid = custid;
         this.name = name;
         this.address=address;
+        this.pass=pass;
+        this.username=username;
     }
     public int getresid() {
         return custid;
@@ -56,6 +62,21 @@ public class CustomerOwner {
     {
     	return address;
     }
+
+    public void setUserName(String username) {
+    	this.username=username;
+    }
+    public String getUserName() {
+        return username;
+    }
+
+    public void setpass(int pass) {
+        this.pass = pass;
+    }
+    public int getpass() {
+        return pass;
+    }
+   
     @RolesAllowed({"CustomerOwner"})
 
     public  List <Restaurant> getListRestaurants () {
