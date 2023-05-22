@@ -1,6 +1,5 @@
 package Users;
 
-import java.awt.PageAttributes.MediaType;
 
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
@@ -8,12 +7,14 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
 
 import alakeel.customer.CustomerOwner;
 import alakeel.restaurant.Restaurant;
 import alakeel.restaurant.RestaurantOwner;
 import alakeel.runner.Runner;
 
+@Path("/AuthenticationService")
 public class AuthenticationService {
 
     @PersistenceContext(unitName = "myPersistenceUnit")
@@ -22,10 +23,11 @@ public class AuthenticationService {
     @POST
     @Path("/restaurantowner/signup")
     @Consumes(MediaType.APPLICATION_JSON)
-    public boolean signUpRestaurantOwner(String username, int pass) {
+    public boolean signUpRestaurantOwner(String username, int pass,String email) {
     	RestaurantOwner owner = new RestaurantOwner() ;
     	owner.setUserName(username);
     	owner.setpass(pass);
+    	owner.setEmail(email);
     	em.persist(owner);
         return true;
     }
@@ -34,10 +36,11 @@ public class AuthenticationService {
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed({"CustomerOwner"})
 
-    public boolean signUpCustomer(String username, int pass) {
+    public boolean signUpCustomer(String username, int pass,String email) {
     	CustomerOwner customer = new CustomerOwner();
     	customer.setUserName(username);
     	customer.setpass(pass);
+    	customer.setEmail(email);
     	em.persist(customer);
     	return true;
     }
@@ -45,10 +48,11 @@ public class AuthenticationService {
     @Path("/runner/signup")
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed({"runner"})
-    public boolean signUpRunner(String username, int pass) {
+    public boolean signUpRunner(String username, int pass,String email) {
         Runner runner=new Runner() ;
+        runner.setUserName(username);
         runner.setpass(pass);
-        runner.setpass(pass);
+        runner.setEmail(email);
         em.persist(runner);
         return true;
     }
@@ -61,7 +65,7 @@ public class AuthenticationService {
         RestaurantOwner owner = em.createQuery("SELECT o FROM RestaurantOwner o WHERE o.username = :username", RestaurantOwner.class)
                 .setParameter("username", username)
                 .getSingleResult();
-        return owner != null && owner 
+        return owner != null && owner.getpass()==pass;
     }
     @POST
     @Path("/customer/login")
@@ -73,7 +77,7 @@ public class AuthenticationService {
     	CustomerOwner customer = em.createQuery("SELECT c FROM Customer c WHERE c.username = :username", CustomerOwner.class)
                 .setParameter("username", username)
                 .getSingleResult();
-        return customer != null && customer.getpass().
+        return customer != null && customer.getpass()==pass;
     }
     @POST
     @Path("/runner/login")
@@ -84,7 +88,7 @@ public class AuthenticationService {
         Runner runner = em.createQuery("SELECT r FROM Runner r WHERE r.username = :username", Runner.class)
                 .setParameter("username", username)
                 .getSingleResult();
-        return( runner != null && runner.getpass().equals(pass));
-
-    }
+        return( runner != null && runner.getpass()==pass);
+        }
+    
 }
