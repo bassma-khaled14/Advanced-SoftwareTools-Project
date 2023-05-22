@@ -108,12 +108,19 @@ public class Order implements Serializable{
     	}
     	
     }
+   	
    	public void NumberAllCancelled(Restaurant resid,String orderStatus)
    	{
    		if((orderStatus=="Cancelled"))
    		{
    			resid.setCancelledOrder(resid.getCancelledOrder()+1);
    		}
+   	}
+	public void NumberAllCompleted(Restaurant resid,String orderStatus)
+   	{
+   		if((orderStatus=="Delivered"))
+   		{
+   			resid.setCompletedOrder(resid.getCompletedOrder()+1);   		}
    	}
 
 }
