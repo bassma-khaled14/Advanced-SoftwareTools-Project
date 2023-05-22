@@ -26,13 +26,17 @@ public class Restaurant implements Serializable {
     private List<Meal> mealList;
     @NotNull
     private String address;
+    private long totalincome;
+    private int completedorders;
+    private int cancelledorders;
     EntityManager entityManager;
-    public Restaurant(int resid, String name, RestaurantOwner resownerid, List<Meal> mealList, String address) {
+    public Restaurant(int resid, String name, RestaurantOwner resownerid, List<Meal> mealList, String address, long totalincome) {
         this.resid = resid;
         this.name = name;
         this.resownerid=resownerid;
         this.mealList = mealList;
         this.address=address;
+        this.totalincome=totalincome;
     }
     public Restaurant() {}
 
@@ -80,7 +84,29 @@ public class Restaurant implements Serializable {
     {
     	return address;
     }
-	
+    public void settotalincome (double tmeotalincom){
+    	this.totalincome=totalincome;
+    }
+    public long gettotalincome(){
+    	return  totalincome;
+    }
+    public void setCompletedOrder(int completedorders)
+    {
+    	this.completedorders=completedorders;
+    }
+    public int getCompletedOrder()
+    {
+    	return completedorders;
+    }
+    public void setCancelledOrder(int cancelledorders)
+    {
+    	this.cancelledorders=cancelledorders;
+    }
+    public int getCancelledOrder()
+    {
+    	return cancelledorders;
+    }
+    
 }
     
 
