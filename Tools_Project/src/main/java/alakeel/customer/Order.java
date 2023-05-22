@@ -20,6 +20,8 @@ import alakeel.runner.Runner;
 
 @Entity
 @NamedQuery(name = "itemarray", query = "Select item from itemarr itemarray")
+@RolesAllowed({"runner"})
+
 public class Order implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -98,7 +100,6 @@ public class Order implements Serializable{
         this.restaurant = restaurant;
     }
 
-   	@RolesAllowed({"runner"})
     public void addMoneyToRes(double totalPrice,String orderStatus,Restaurant resid)
     {
     	if(orderStatus=="Delivered")
