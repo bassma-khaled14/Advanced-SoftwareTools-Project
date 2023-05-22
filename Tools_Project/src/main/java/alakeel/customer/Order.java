@@ -4,17 +4,22 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
 
 import alakeel.restaurant.Restaurant;
 import alakeel.runner.Runner;
 
 @Entity
+@NamedQuery(name = "itemarray", query = "Select item from itemarr itemarray")
+
 public class Order implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -27,6 +32,7 @@ public class Order implements Serializable{
 	private List<String> itemarr;
     private double totalPrice;
     private String orderStatus;
+    private EntityManager entityManager;
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
@@ -50,12 +56,13 @@ public class Order implements Serializable{
     public void setorderid(int orderid) {
         this.orderid = orderid;
     }
-
+    
     public List<String> getitemarr() {
         return itemarr;
     }
 
     public void setitemarr(List<String> itemarr) {
+    	Query query=entityManager.createQuery("itemarray");
         this.itemarr = itemarr;
     }
 
