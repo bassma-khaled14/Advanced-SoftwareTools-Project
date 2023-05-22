@@ -133,7 +133,7 @@ public class Order implements Serializable{
    		{
    			resid.setCompletedOrder(resid.getCompletedOrder()+1);   		}
    	}
-	
+	@RolesAllowed({"CustomerOwner"})
 public void createOrder(int custid,  String restname, List<Order> itemarr, double delieveryFees,int runnerid) {
         
         // Update runner's status to "busy"
@@ -151,5 +151,15 @@ public void createOrder(int custid,  String restname, List<Order> itemarr, doubl
 
         entityManager.persist(order);
     }
+	@RolesAllowed({"CustomerOwner"})
+	public void ChangeOrder(int orderid,String orderStatus,Order order)
+	{
+		
+		entityManager.find(Order.class,orderid);
+		if(orderStatus!="Cancelled")
+		{
+			entityManager.merge(order);
+		}
+	}
 
 }
