@@ -31,10 +31,11 @@ public class Order implements Serializable{
 	private Runner runner;
 	@NotNull
 	private boolean delivered;
-	private List<String> itemarr;
+	private List<Order> itemarr;
     private double totalPrice;
     private String orderStatus;
     private EntityManager entityManager;
+    private CustomerOwner custid;
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
@@ -42,7 +43,7 @@ public class Order implements Serializable{
     // constructors
     public Order() {}
 
-    public Order(List<String> itemarr, double totalPrice, Runner runner, Restaurant restaurant) {
+    public Order(List<Order> itemarr, double totalPrice, Runner runner, Restaurant restaurant) {
         this.itemarr = itemarr;
         this.totalPrice = totalPrice;
         this.runner = runner;
@@ -59,11 +60,11 @@ public class Order implements Serializable{
         this.orderid = orderid;
     }
     
-    public List<String> getitemarr() {
+    public List<Order> getitemarr() {
         return itemarr;
     }
 
-    public void setitemarr(List<String> itemarr) {
+    public void setitemarr(List<Order> itemarr) {
     	Query query=entityManager.createQuery("itemarray");
         this.itemarr = itemarr;
     }
@@ -99,6 +100,15 @@ public class Order implements Serializable{
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
+    private double calculateTotalReceiptValue(List<Order> itemarr, double deliveryFees) {
+        double total = 0.0;
+
+        for (Order item : itemarr) {
+            total += item.getTotalPrice();
+        }
+
+        return total + deliveryFees;
+    }
 
     public void addMoneyToRes(double totalPrice,String orderStatus,Restaurant resid)
     {
@@ -123,5 +133,23 @@ public class Order implements Serializable{
    		{
    			resid.setCompletedOrder(resid.getCompletedOrder()+1);   		}
    	}
+	
+public void createOrder(int custid,  String restname, List<Order> itemarr, double delieveryFees,int runnerid) {
+        
+        // Update runner's status to "busy"
+        runner.setRunnerStatus("busy");
+        entityManager.merge(runner);
+
+        // Create the order
+        Order order = new Order();
+        order.custid.setcustid(custid);
+        order.restaurant.setName(restname);
+        order.setitemarr(itemarr);
+		order.runner.setDeliveryFees(delieveryFees);
+        order.runner.setrunnerid(runnerid);
+        order.setTotalPrice(calculateTotalReceiptValue(itemarr, delieveryFees));
+
+        entityManager.persist(order);
+    }
 
 }
