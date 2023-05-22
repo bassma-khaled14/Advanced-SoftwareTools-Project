@@ -13,6 +13,10 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 import alakeel.customer.Order;
 @Entity
@@ -33,6 +37,8 @@ public class Runner implements Serializable{
 	private int RandomAvailableRunner;
 	@NotNull
 	private String username;
+	@NotNull
+	private String email;
 	@NotNull
 	private int pass;
 	private List <Runner> Runners;
@@ -101,6 +107,12 @@ public class Runner implements Serializable{
     public int getpass() {
         return pass;
     }
+    public void setEmail(String email) {
+    	this.email=email;
+    }
+    public String getEmail() {
+        return email;
+    }
     public List <Runner>  getRunners() {
         return Runners;
     }
@@ -111,12 +123,15 @@ public class Runner implements Serializable{
     }
     
 
-                                                   
-    public void markorderdelivered(Order order) {
+    @PUT
+    @Path("/{orderId}/markorderdeliver")                                               
+    public void markorderdelivered(@PathParam("orderId") int orderId ,Order order) {
     	order.setOrderStatus("Delivered");
         this.setRunnerStatus("available");
         this.setaccomplishedtrips(this.getaccomplishedtrips() + 1);
     }
+    @GET
+    @Path("/RandomAvailableRunner")
     private Runner getRandomAvailableRunner() {
         Query query = em.createQuery("Runners");
         List<Runner> availableRunners = query.getResultList();
