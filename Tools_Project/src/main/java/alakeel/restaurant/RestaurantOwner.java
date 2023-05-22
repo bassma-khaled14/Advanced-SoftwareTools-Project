@@ -9,8 +9,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 @Entity
 @RolesAllowed({"RestaurantOwner"})
 @Path("/RestaurantOwner")
@@ -65,7 +71,9 @@ public class RestaurantOwner {
 
 	   
         //Function craete Menu 
-	    
+	    @POST
+	    @Path("/createMeue")
+	    @Consumes(MediaType.APPLICATION_JSON)
 	    public void createMenue( List<Meal> mealList) 
 	    {
 	    	 for (Meal meal : mealList) {
@@ -74,14 +82,19 @@ public class RestaurantOwner {
 	    	 
 	    }
 	    // Function EditMenu
+	    @PUT
+	    @Path("/editMenu")
+	    @Consumes(MediaType.APPLICATION_JSON)
 	    public void editMenu( List<Meal> mealList) 
 	    {
 	    	 for (Meal meal : mealList) {
 	        em.merge(meal); 
 	    }
 	    }
-	    
-	    public Restaurant GetRestaurantdetailsbyid( int resid)
+	    @GET
+	    @Path("/GetRestaurantdetails/{id}")
+	    @Produces(MediaType.APPLICATION_JSON)
+	    public Restaurant GetRestaurantdetailsbyid(@PathParam("id") int resid)
 	   
 	    {
 	    	
@@ -89,6 +102,7 @@ public class RestaurantOwner {
 	    }
 	    @GET
 	    @Path("/CreateReport")
+	    @Consumes(MediaType.APPLICATION_JSON)
 	    public void CreateReport(Restaurant resid)
 	    {
 	    	System.out.println("The total income is " +resid.gettotalincome());
