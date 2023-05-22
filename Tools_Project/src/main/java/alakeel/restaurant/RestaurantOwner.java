@@ -74,13 +74,16 @@ public class RestaurantOwner {
 	    	
 	    	return em.find(Restaurant.class,resid);
 	    }
-	 
-	}
-
 	   
+	    public void CreateReport(Restaurant resid)
+	    {
+	    	System.out.println("The total income is " +resid.gettotalincome());
+	    	System.out.println("The total cancelled order is " +resid.getCancelledOrder());
+	    	System.out.println("The total completed orders is " +resid.getCompletedOrder());
+	    	
+	    }
 	 
-
 	    
-		
 
+	 
 }
