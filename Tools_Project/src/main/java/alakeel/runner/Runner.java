@@ -17,8 +17,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import alakeel.customer.Order;
+import alakeel.restaurant.Meal;
 @Entity
 @RolesAllowed({"runner"})
 @NamedQuery(name = "Runner", query = "Select r from Runner Runners")
@@ -125,30 +128,31 @@ public class Runner implements Serializable{
     
 
     @PUT
-    @Path("/{orderId}/markorderdeliver")                                               
-    public void markorderdelivered(@PathParam("orderId") int orderId ,Order order) {
+    @Path("/markorderdeliver")    
+    @Produces(MediaType.APPLICATION_JSON)
+
+    public void markorderdelivered(int orderId ,Order order) {
     	order.setOrderStatus("Delivered");
         this.setRunnerStatus("available");
         this.setaccomplishedtrips(this.getaccomplishedtrips() + 1);
     }
     @GET
-    @Path("/RandomAvailableRunner")
-    private Runner getRandomAvailableRunner() {
-        Query query = em.createQuery("Runners");
-        List<Runner> availableRunners = query.getResultList();
-        int availableRunnersCount = availableRunners.size();
+    @Path("/AvailableRunner")
+    @Produces(MediaType.APPLICATION_JSON)
 
-        if (availableRunnersCount > 0)
-        {
-        	
-            int randomIndex = ThreadLocalRandom.current().nextInt(availableRunnersCount);
-            return availableRunners.get(randomIndex);
-        }
-
-        // If no available runners, return nullS
-        return null;
-    }
+    public Runner availableRunners(int runnerid)
+	{
+		
+		em.find(Runner.class,runnerid);
+		if(status!="busy")
+		{
+			 return em.find(Runner.class, runnerid);
+	    }
+		return null;
+		
+	}
+}
     
 	
 
-}
+

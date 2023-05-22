@@ -26,7 +26,7 @@ import alakeel.runner.Runner;
 @Entity
 @NamedQuery(name = "itemarray", query = "Select item from itemarr itemarray")
 @RolesAllowed({"runner"})
-
+@Path("Order")
 public class Order implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
