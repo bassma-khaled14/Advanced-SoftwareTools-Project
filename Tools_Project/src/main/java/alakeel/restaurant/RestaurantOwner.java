@@ -1,6 +1,7 @@
 package alakeel.restaurant;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 import javax.validation.constraints.NotNull;
 @Entity
+@RolesAllowed({"RestaurantOwner"})
 public class RestaurantOwner {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -50,12 +52,27 @@ public class RestaurantOwner {
 	    }
 	   
         //Function craete Menu 
+	    
 	    public void createMenue( List<Meal> mealList) 
 	    {
 	    	 for (Meal meal : mealList) {
 	        em.persist(meal); 
 	    }
 	    	 
+	    }
+	    // Function EditMenu
+	    public void editMenu( List<Meal> mealList) 
+	    {
+	    	 for (Meal meal : mealList) {
+	        em.merge(meal); 
+	    }
+	    }
+	    
+	    public Restaurant GetRestaurantdetailsbyid( int resid)
+	   
+	    {
+	    	
+	    	return em.find(Restaurant.class,resid);
 	    }
 	 
 	}
