@@ -1,8 +1,13 @@
 package Users;
 
+import java.awt.PageAttributes.MediaType;
+
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 
 import alakeel.customer.CustomerOwner;
 import alakeel.restaurant.Restaurant;
@@ -14,7 +19,9 @@ public class AuthenticationService {
     @PersistenceContext(unitName = "myPersistenceUnit")
     private EntityManager em;
     @RolesAllowed({"RestaurantOwner"})
-
+    @POST
+    @Path("/restaurantowner/signup")
+    @Consumes(MediaType.APPLICATION_JSON)
     public boolean signUpRestaurantOwner(String username, int pass) {
     	RestaurantOwner owner = new RestaurantOwner() ;
     	owner.setUserName(username);
@@ -22,6 +29,9 @@ public class AuthenticationService {
     	em.persist(owner);
         return true;
     }
+    @POST
+    @Path("/customer/signup")
+    @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed({"CustomerOwner"})
 
     public boolean signUpCustomer(String username, int pass) {
@@ -31,7 +41,10 @@ public class AuthenticationService {
     	em.persist(customer);
     	return true;
     }
- @RolesAllowed({"runner"})
+    @POST
+    @Path("/runner/signup")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"runner"})
     public boolean signUpRunner(String username, int pass) {
         Runner runner=new Runner() ;
         runner.setpass(pass);
@@ -39,7 +52,10 @@ public class AuthenticationService {
         em.persist(runner);
         return true;
     }
- @RolesAllowed({"RestaurantOwner"})
+    @POST
+    @Path("/restaurantowner/login")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"RestaurantOwner"})
 
     public boolean loginRestaurantOwner(String username, int pass) {
         RestaurantOwner owner = em.createQuery("SELECT o FROM RestaurantOwner o WHERE o.username = :username", RestaurantOwner.class)
@@ -47,14 +63,21 @@ public class AuthenticationService {
                 .getSingleResult();
         return owner != null && owner 
     }
+    @POST
+    @Path("/customer/login")
+    @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed({"CustomerOwner"})
 
+   
     public boolean loginCustomer(String username, int pass) {
     	CustomerOwner customer = em.createQuery("SELECT c FROM Customer c WHERE c.username = :username", CustomerOwner.class)
                 .setParameter("username", username)
                 .getSingleResult();
         return customer != null && customer.getpass().
     }
+    @POST
+    @Path("/runner/login")
+    @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed({"runner"})
 
     public boolean loginRunner(String username, int pass) {

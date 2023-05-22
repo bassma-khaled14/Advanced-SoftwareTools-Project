@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
 @Entity
 @RolesAllowed({"RestaurantOwner"})
 public class RestaurantOwner {
@@ -74,7 +76,8 @@ public class RestaurantOwner {
 	    	
 	    	return em.find(Restaurant.class,resid);
 	    }
-	   
+	    @GET
+	    @Path("/CreateReport")
 	    public void CreateReport(Restaurant resid)
 	    {
 	    	System.out.println("The total income is " +resid.gettotalincome());

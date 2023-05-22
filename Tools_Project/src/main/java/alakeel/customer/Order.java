@@ -14,6 +14,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
 
 import alakeel.restaurant.Restaurant;
 import alakeel.runner.Runner;
@@ -100,7 +105,10 @@ public class Order implements Serializable{
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
-    private double calculateTotalReceiptValue(List<Order> itemarr, double deliveryFees) {
+    @POST
+    @Path("/calculateTotalReceiptValue")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public double calculateTotalReceiptValue(List<Order> itemarr, double deliveryFees) {
         double total = 0.0;
 
         for (Order item : itemarr) {
@@ -109,6 +117,9 @@ public class Order implements Serializable{
 
         return total + deliveryFees;
     }
+    @PUT
+    @Path("/addMoneyToRes")
+    @Consumes(MediaType.APPLICATION_JSON)
 
     public void addMoneyToRes(double totalPrice,String orderStatus,Restaurant resid)
     {
@@ -119,6 +130,9 @@ public class Order implements Serializable{
     	}
     	
     }
+    @PUT
+    @Path("/NumberAllCancelled")
+    @Consumes(MediaType.APPLICATION_JSON)
    	
    	public void NumberAllCancelled(Restaurant resid,String orderStatus)
    	{
@@ -127,6 +141,10 @@ public class Order implements Serializable{
    			resid.setCancelledOrder(resid.getCancelledOrder()+1);
    		}
    	}
+    @PUT
+    @Path("/NumberAllCompleted")
+    @Consumes(MediaType.APPLICATION_JSON)
+    
 	public void NumberAllCompleted(Restaurant resid,String orderStatus)
    	{
    		if((orderStatus=="Delivered"))
@@ -134,7 +152,11 @@ public class Order implements Serializable{
    			resid.setCompletedOrder(resid.getCompletedOrder()+1);   		}
    	}
 	@RolesAllowed({"CustomerOwner"})
-public void createOrder(int custid,  String restname, List<Order> itemarr, double delieveryFees,int runnerid) {
+	@POST
+    @Path("/createOrder")
+    @Consumes(MediaType.APPLICATION_JSON)
+	
+    public void createOrder(int custid,  String restname, List<Order> itemarr, double delieveryFees,int runnerid) {
         
         // Update runner's status to "busy"
         runner.setRunnerStatus("busy");
@@ -152,6 +174,9 @@ public void createOrder(int custid,  String restname, List<Order> itemarr, doubl
         entityManager.persist(order);
     }
 	@RolesAllowed({"CustomerOwner"})
+	@PUT
+    @Path("/ChangeOrder")
+    @Consumes(MediaType.APPLICATION_JSON)
 	public void ChangeOrder(int orderid,String orderStatus,Order order)
 	{
 		
